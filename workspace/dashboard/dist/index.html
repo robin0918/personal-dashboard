@@ -222,6 +222,20 @@
     .proxy-actions { display: flex; gap: 8px; }
     .proxy-actions button { padding: 4px 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 11px; cursor: pointer; }
     .proxy-actions button:hover { background: rgba(255,255,255,0.2); }
+    .proxy-tag { padding: 2px 8px; border-radius: 4px; font-size: 10px; background: rgba(16,185,129,0.2); color: var(--success); }
+    .proxy-tag.offline { background: rgba(239,68,68,0.2); color: var(--danger); }
+    
+    .browser-profiles { display: flex; flex-direction: column; gap: 10px; }
+    .browser-profile { display: flex; align-items: center; gap: 12px; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+    .browser-profile:hover { border-color: var(--primary); }
+    .browser-profile.selected { border-color: var(--primary); background: rgba(102,126,234,0.1); }
+    .profile-icon { font-size: 24px; }
+    .profile-info { flex: 1; }
+    .profile-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .profile-proxy { font-size: 11px; color: var(--text-muted); }
+    .profile-status { font-size: 10px; padding: 2px 8px; border-radius: 4px; background: rgba(245,158,11,0.2); color: var(--warning); }
+    .profile-status.active { background: rgba(16,185,129,0.2); color: var(--success); }
+    .profile-bind { font-size: 11px; color: var(--primary); }
     
     .switch { position: relative; display: inline-block; width: 36px; height: 20px; }
     .switch input { opacity: 0; width: 0; height: 0; }
@@ -645,35 +659,81 @@
               <div class="proxy-item">
                 <div class="proxy-status-dot active"></div>
                 <div class="proxy-info">
-                  <div class="proxy-ip">美国 IP: 192.168.1.100:8888</div>
-                  <div class="proxy-type">HTTP - 住宅IP</div>
+                  <div class="proxy-ip">🇺🇸 美国 - 192.168.1.100:8888</div>
+                  <div class="proxy-type">HTTP · 住宅IP · 有效期: 30天</div>
                 </div>
+                <div class="proxy-tag">活跃</div>
                 <div class="proxy-actions">
                   <button onclick="testProxy(this)">测试</button>
+                  <button onclick="editProxy(this)">编辑</button>
                   <button onclick="removeProxy(this)">删除</button>
                 </div>
               </div>
               <div class="proxy-item">
                 <div class="proxy-status-dot active"></div>
                 <div class="proxy-info">
-                  <div class="proxy-ip">日本 IP: 192.168.1.101:8888</div>
-                  <div class="proxy-type">HTTP - 住宅IP</div>
+                  <div class="proxy-ip">🇯🇵 日本 - 192.168.1.101:8888</div>
+                  <div class="proxy-type">HTTPS · 住宅IP · 有效期: 30天</div>
                 </div>
+                <div class="proxy-tag">活跃</div>
                 <div class="proxy-actions">
                   <button onclick="testProxy(this)">测试</button>
+                  <button onclick="editProxy(this)">编辑</button>
                   <button onclick="removeProxy(this)">删除</button>
                 </div>
               </div>
               <div class="proxy-item">
                 <div class="proxy-status-dot"></div>
                 <div class="proxy-info">
-                  <div class="proxy-ip">英国 IP: 192.168.1.102:8888</div>
-                  <div class="proxy-type">HTTP - 数据中心IP</div>
+                  <div class="proxy-ip">🇬🇧 英国 - 192.168.1.102:1080</div>
+                  <div class="proxy-type">SOCKS5 · 数据中心IP · 有效期: 15天</div>
                 </div>
+                <div class="proxy-tag offline">离线</div>
                 <div class="proxy-actions">
                   <button onclick="testProxy(this)">测试</button>
+                  <button onclick="editProxy(this)">编辑</button>
                   <button onclick="removeProxy(this)">删除</button>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Browser Profile Binding -->
+          <div style="margin-bottom:24px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <h3 style="font-size:13px;color:var(--text-muted);">🖥️ 指纹浏览器 (紫鸟)</h3>
+              <div>
+                <button onclick="openZiniao()" style="padding:4px 10px;background:rgba(255,255,255,0.1);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;cursor:pointer;margin-right:6px;">打开紫鸟</button>
+                <button onclick="refreshProfiles()" style="padding:4px 10px;background:var(--primary);border:none;border-radius:6px;color:white;font-size:11px;cursor:pointer;">刷新</button>
+              </div>
+            </div>
+            <div class="browser-profiles">
+              <div class="browser-profile" onclick="selectProfile(this, 0)">
+                <div class="profile-icon">🌐</div>
+                <div class="profile-info">
+                  <div class="profile-name">美国TikTok环境</div>
+                  <div class="profile-proxy">🇺🇸 192.168.1.100:8888</div>
+                </div>
+                <div class="profile-status active">运行中</div>
+                <div class="profile-bind">绑定: @tiktok_user1</div>
+              </div>
+              <div class="browser-profile" onclick="selectProfile(this, 1)">
+                <div class="profile-icon">🌐</div>
+                <div class="profile-info">
+                  <div class="profile-name">日本TikTok环境</div>
+                  <div class="profile-proxy">🇯🇵 192.168.1.101:8888</div>
+                </div>
+                <div class="profile-status">未启动</div>
+                <div class="profile-bind">绑定: @tiktok_jp</div>
+              </div>
+              <div class="browser-profile" onclick="selectProfile(this, 2)">
+                <div class="profile-icon">🌐</div>
+                <div class="profile-info">
+                  <div class="profile-name">英国YouTube环境</div>
+                  <div class="profile-proxy">🇬🇸 192.168.1.102:1080</div>
+                </div>
+                <div class="profile-status">未启动</div>
+                <div class="profile-bind">绑定: @youtube_uk</div>
               </div>
             </div>
           </div>
@@ -1070,11 +1130,82 @@
     }
 
     function addSocialAccount() {
-      const platform = prompt('平台 (tiktok/youtube/instagram/facebook/x):');
-      const username = prompt('用户名:');
-      if (platform && username) {
-        alert('✅ 账号已添加: @' + username + ' (' + platform + ')');
+      const html = `
+        <div style="position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;" onclick="if(event.target===this)this.remove()">
+          <div style="background:rgba(30,30,50,0.95);border:1px solid var(--border);border-radius:16px;padding:24px;width:420px;max-width:90%;">
+            <h3 style="margin-bottom:20px;font-size:16px;">📱 添加社媒账号</h3>
+            
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">选择平台</label>
+              <select id="accountPlatform" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+                <option value="tiktok">🎵 TikTok</option>
+                <option value="youtube">▶️ YouTube</option>
+                <option value="instagram">📸 Instagram</option>
+                <option value="facebook">👥 Facebook</option>
+                <option value="twitter">𝕏 X (Twitter)</option>
+                <option value="linkedin">💼 LinkedIn</option>
+                <option value="pinterest">📌 Pinterest</option>
+              </select>
+            </div>
+            
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">用户名 / 邮箱</label>
+              <input id="accountUser" placeholder="@username 或 email@example.com" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+            </div>
+            
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">密码</label>
+              <input id="accountPass" type="password" placeholder="账号密码" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+            </div>
+            
+            <div style="margin-bottom:20px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">绑定指纹浏览器环境</label>
+              <select id="accountProfile" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+                <option value="">-- 选择浏览器环境 --</option>
+                <option value="0">🌐 美国TikTok环境</option>
+                <option value="1">🌐 日本TikTok环境</option>
+                <option value="2">🌐 英国YouTube环境</option>
+              </select>
+            </div>
+            
+            <div style="display:flex;gap:12px;">
+              <button onclick="this.closest('[style*=\'position:fixed\']').remove()" style="flex:1;padding:12px;background:rgba(255,255,255,0.1);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;">取消</button>
+              <button onclick="saveAccount()" style="flex:1;padding:12px;background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;border-radius:8px;color:white;cursor:pointer;font-weight:600;">保存</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+
+    function saveAccount() {
+      const platform = document.getElementById('accountPlatform').value;
+      const user = document.getElementById('accountUser').value;
+      const profile = document.getElementById('accountProfile').value;
+      
+      if (!user) {
+        alert('请输入用户名');
+        return;
       }
+      
+      const platformNames = {tiktok: 'TikTok', youtube: 'YouTube', instagram: 'Instagram', facebook: 'Facebook', twitter: 'X (Twitter)', linkedin: 'LinkedIn', pinterest: 'Pinterest'};
+      
+      alert('✅ 账号已添加!\n\n平台: ' + platformNames[platform] + '\n用户: ' + user + (profile ? '\n绑定环境: 浏览器环境 ' + (parseInt(profile)+1) : ''));
+      document.querySelector('[style*="position:fixed"]').remove();
+    }
+
+    function openZiniao() {
+      open('/Applications/ziniao.app');
+      alert('✅ 已打开紫鸟指纹浏览器');
+    }
+
+    function refreshProfiles() {
+      alert('🔄 刷新浏览器配置...\n\n(需要先打开紫鸟)');
+    }
+
+    function selectProfile(el, index) {
+      document.querySelectorAll('.browser-profile').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
     }
 
     function selectPlatform(platform) {
@@ -1085,10 +1216,75 @@
     }
 
     function addProxy() {
-      const proxy = prompt('代理 IP:端口 (如: 192.168.1.1:8888):');
-      if (proxy) {
-        alert('✅ 代理已添加: ' + proxy);
+      // Show proxy configuration modal
+      const html = `
+        <div style="position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;" onclick="if(event.target===this)this.remove()">
+          <div style="background:rgba(30,30,50,0.95);border:1px solid var(--border);border-radius:16px;padding:24px;width:420px;max-width:90%;">
+            <h3 style="margin-bottom:20px;font-size:16px;">🌐 添加代理</h3>
+            
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">代理类型</label>
+              <select id="proxyType" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+                <option value="http">HTTP</option>
+                <option value="https">HTTPS</option>
+                <option value="socks5">SOCKS5</option>
+              </select>
+            </div>
+            
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">代理地址</label>
+              <input id="proxyHost" placeholder="IP:端口 (如 192.168.1.1:8888)" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+            </div>
+            
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">用户名 (可选)</label>
+              <input id="proxyUser" placeholder="代理账号" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+            </div>
+            
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">密码 (可选)</label>
+              <input id="proxyPass" type="password" placeholder="代理密码" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+            </div>
+            
+            <div style="margin-bottom:20px;">
+              <label style="display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;">IP类型</label>
+              <select id="proxyIPType" style="width:100%;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:var(--text);">
+                <option value="residential">🏠 住宅IP</option>
+                <option value="datacenter">🏢 数据中心IP</option>
+                <option value="mobile">📱 移动IP</option>
+              </select>
+            </div>
+            
+            <div style="display:flex;gap:12px;">
+              <button onclick="this.closest('[style*=\'position:fixed\']').remove()" style="flex:1;padding:12px;background:rgba(255,255,255,0.1);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;">取消</button>
+              <button onclick="saveProxy()" style="flex:1;padding:12px;background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;border-radius:8px;color:white;cursor:pointer;font-weight:600;">保存</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+
+    function saveProxy() {
+      const type = document.getElementById('proxyType').value;
+      const host = document.getElementById('proxyHost').value;
+      const user = document.getElementById('proxyUser').value;
+      const ipType = document.getElementById('proxyIPType').value;
+      
+      if (!host) {
+        alert('请输入代理地址');
+        return;
       }
+      
+      const typeNames = {http: 'HTTP', https: 'HTTPS', socks5: 'SOCKS5'};
+      const ipNames = {residential: '住宅IP', datacenter: '数据中心IP', mobile: '移动IP'};
+      
+      alert('✅ 代理已添加!\n\n类型: ' + typeNames[type] + '\n地址: ' + host + '\nIP类型: ' + ipNames[ipType]);
+      document.querySelector('[style*="position:fixed"]').remove();
+    }
+
+    function editProxy(btn) {
+      alert('编辑代理配置');
     }
 
     function testProxy(btn) {
