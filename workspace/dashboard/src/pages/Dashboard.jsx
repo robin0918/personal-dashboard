@@ -18,34 +18,28 @@ import {
   AlertCircle,
   GitBranch,
   Calendar,
-  Zap,
-  Target,
   Plus,
   MoreHorizontal,
   ArrowRight,
-  Sun,
-  Moon
+  Sparkles
 } from 'lucide-react'
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
-// Modern color palette
+// Blog-style color palette
 const chartColors = {
-  primary: '#0ea5e9',
-  secondary: '#8b5cf6',
-  success: '#10b981',
-  warning: '#f59e0b',
-  danger: '#ef4444',
+  primary: '#667eea',
+  secondary: '#764ba2',
 }
 
-// Mock Data - Modern dashboard data
+// Mock Data - Same as blog style
 const weeklyProgress = [
-  { day: '周一', progress: 72, tasks: 8 },
-  { day: '周二', progress: 85, tasks: 10 },
-  { day: '周三', progress: 45, tasks: 5 },
-  { day: '周四', progress: 92, tasks: 12 },
-  { day: '周五', progress: 78, tasks: 9 },
-  { day: '周六', progress: 65, tasks: 7 },
-  { day: '周日', progress: 88, tasks: 11 },
+  { day: '周一', progress: 72 },
+  { day: '周二', progress: 85 },
+  { day: '周三', progress: 45 },
+  { day: '周四', progress: 92 },
+  { day: '周五', progress: 78 },
+  { day: '周六', progress: 65 },
+  { day: '周日', progress: 88 },
 ]
 
 const recentProjects = [
@@ -57,10 +51,10 @@ const recentProjects = [
 ]
 
 const todayTasks = [
-  { id: 1, task: '发布新博客文章', status: 'completed', priority: 'high', platform: 'Blog' },
-  { id: 2, task: '录制 YouTube 视频', status: 'in-progress', priority: 'high', platform: 'YouTube' },
-  { id: 3, task: '回复粉丝评论', status: 'pending', priority: 'medium', platform: 'Twitter' },
-  { id: 4, task: '优化 SEO', status: 'pending', priority: 'low', platform: 'All' },
+  { id: 1, task: '发布新博客文章', status: 'completed', priority: 'high' },
+  { id: 2, task: '录制 YouTube 视频', status: 'in-progress', priority: 'high' },
+  { id: 3, task: '回复粉丝评论', status: 'pending', priority: 'medium' },
+  { id: 4, task: '优化 SEO', status: 'pending', priority: 'low' },
 ]
 
 const stats = [
@@ -79,14 +73,13 @@ const menuItems = [
   { id: 'analytics', label: '数据分析', icon: BarChart3 },
 ]
 
-// Premium Stat Card Component
+// Premium Stat Card - Blog Style
 function StatCard({ label, value, change, icon: Icon, color, delay }) {
   const colorClasses = {
-    emerald: 'from-emerald-500/20 to-emerald-600/5 border-emerald-500/20',
-    blue: 'from-blue-500/20 to-blue-600/5 border-blue-500/20',
-    amber: 'from-amber-500/20 to-amber-600/5 border-amber-500/20',
-    purple: 'from-purple-500/20 to-purple-600/5 border-purple-500/20',
-    pink: 'from-pink-500/20 to-pink-600/5 border-pink-500/20',
+    emerald: 'from-emerald-500/20 to-emerald-600/10 border-emerald-500/30',
+    blue: 'from-blue-500/20 to-blue-600/10 border-blue-500/30',
+    amber: 'from-amber-500/20 to-amber-600/10 border-amber-500/30',
+    purple: 'from-purple-500/20 to-purple-600/10 border-purple-500/30',
   }
 
   const iconColors = {
@@ -94,7 +87,6 @@ function StatCard({ label, value, change, icon: Icon, color, delay }) {
     blue: 'text-blue-400',
     amber: 'text-amber-400',
     purple: 'text-purple-400',
-    pink: 'text-pink-400',
   }
 
   return (
@@ -102,40 +94,36 @@ function StatCard({ label, value, change, icon: Icon, color, delay }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: delay * 0.1 }}
-      className={`stat-card group`}
+      className={`glass-card p-6`}
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-dark-400 text-sm font-medium">{label}</p>
-          <p className="text-4xl font-bold mt-2 gradient-text">{value}</p>
+          <p className="text-dark-400 text-sm">{label}</p>
+          <p className="text-3xl font-bold mt-2 gradient-text">{value}</p>
           {change && (
-            <p className="text-emerald-400 text-sm mt-2 flex items-center gap-1">
-              <TrendingUp size={14} />
-              {change} 本周
-            </p>
+            <p className="text-emerald-400 text-sm mt-1">{change} 本周</p>
           )}
         </div>
-        <div className={`p-3 rounded-xl bg-gradient-to-br ${colorClasses[color]} group-hover:scale-110 transition-transform duration-300`}>
+        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colorClasses[color].split(' ')[0]} flex items-center justify-center`}>
           <Icon size={24} className={iconColors[color]} />
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </motion.div>
   )
 }
 
-// Task Item Component
+// Task Item - Blog Style
 function TaskItem({ task, index }) {
-  const priorityColors = {
-    high: 'border-red-500/50 bg-red-500/10',
-    medium: 'border-amber-500/50 bg-amber-500/10',
-    low: 'border-blue-500/50 bg-blue-500/10',
-  }
-
   const statusIcons = {
     completed: <CheckCircle2 size={18} className="text-emerald-400" />,
     'in-progress': <Clock size={18} className="text-blue-400" />,
     pending: <div className="w-4 h-4 rounded-full border-2 border-dark-400" />,
+  }
+
+  const priorityColors = {
+    high: 'bg-red-500/20 text-red-300 border-red-500/30',
+    medium: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+    low: 'bg-primary-500/20 text-primary-300 border-primary-500/30',
   }
 
   return (
@@ -143,7 +131,7 @@ function TaskItem({ task, index }) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.3 + index * 0.1 }}
-      className={`flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all duration-300 group cursor-pointer`}
+      className={`flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-pointer`}
     >
       <div className="flex-shrink-0">
         {statusIcons[task.status]}
@@ -152,34 +140,28 @@ function TaskItem({ task, index }) {
         <p className={`font-medium ${task.status === 'completed' ? 'line-through text-dark-500' : ''}`}>
           {task.task}
         </p>
-        <p className="text-dark-400 text-sm">{task.platform}</p>
       </div>
       <span className={`px-3 py-1 rounded-full text-xs font-medium border ${priorityColors[task.priority]}`}>
         {task.priority === 'high' ? '高' : task.priority === 'medium' ? '中' : '低'}
       </span>
-      <button className="p-2 rounded-lg hover:bg-white/10 opacity-0 group-hover:opacity-100 transition-all">
-        <MoreHorizontal size={16} className="text-dark-400" />
-      </button>
     </motion.div>
   )
 }
 
-// Project Card Component
+// Project Card - Blog Style
 function ProjectCard({ project, index }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.5 + index * 0.1 }}
-      className="card-hover glass-card p-5 cursor-pointer group"
+      className={`glass-card p-5 cursor-pointer ${cardHover}`}
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <span className="text-2xl">{project.icon}</span>
           <div>
-            <h3 className="font-semibold group-hover:text-primary-400 transition-colors">
-              {project.name}
-            </h3>
+            <h3 className="font-semibold">{project.name}</h3>
             <div className="flex items-center gap-2 text-sm text-dark-400">
               <GitBranch size={12} />
               <span>{project.stars} stars</span>
@@ -201,31 +183,31 @@ function ProjectCard({ project, index }) {
           <span className="font-medium">{project.progress}%</span>
         </div>
         <div className="progress-bar">
-          <motion.div 
+          <div 
             className="progress-bar-fill"
-            initial={{ width: 0 }}
-            animate={{ width: `${project.progress}%` }}
-            transition={{ delay: 0.8 + index * 0.1, duration: 0.8 }}
+            style={{ width: `${project.progress}%` }}
           />
         </div>
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-white/5">
+      <div className="flex items-center justify-between pt-3 border-t border-white/10">
         <div className="flex -space-x-2">
           {[1, 2, 3].map((i) => (
             <div 
               key={i}
-              className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-purple-500 border-2 border-dark-900"
+              className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 border-2 border-dark-900"
             />
           ))}
         </div>
-        <ArrowRight size={16} className="text-dark-400 group-hover:text-primary-400 group-hover:translate-x-1 transition-all" />
+        <ArrowRight size={16} className="text-dark-400" />
       </div>
     </motion.div>
   )
 }
 
-// Main Dashboard Component
+const cardHover = "transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:transform hover:-translate-y-1";
+
+// Main Dashboard - Blog Style
 function Dashboard() {
   const [currentTime] = useState(new Date().toLocaleString('zh-CN', { 
     weekday: 'long', 
@@ -237,7 +219,7 @@ function Dashboard() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* Header - Blog Style */}
       <motion.div 
         className="flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}
@@ -260,28 +242,28 @@ function Dashboard() {
             <input 
               type="text" 
               placeholder="搜索..." 
-              className="input pl-12 w-64 rounded-full bg-white/5 border-white/10 focus:bg-white/10 transition-all"
+              className="input-glass pl-12 w-64 rounded-full bg-white/5 border-white/10"
             />
           </div>
           <button className="relative p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all">
             <Bell size={20} className="text-dark-300" />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full" />
           </button>
           <div className="flex items-center gap-3 pl-4 border-l border-white/10">
-            <div className="avatar w-10 h-10 text-lg">🐉</div>
+            <div className="avatar w-10 h-10 flex items-center justify-center text-lg">🐉</div>
             <ChevronDown size={16} className="text-dark-400" />
           </div>
         </div>
       </motion.div>
 
-      {/* Stats Grid */}
+      {/* Stats Grid - Blog Style */}
       <div className="grid grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <StatCard key={stat.label} {...stat} delay={index} />
         ))}
       </div>
 
-      {/* Main Content Grid */}
+      {/* Main Content Grid - Blog Style */}
       <div className="grid grid-cols-3 gap-6">
         {/* Progress Chart */}
         <motion.div 
@@ -315,12 +297,8 @@ function Dashboard() {
             <AreaChart data={weeklyProgress}>
               <defs>
                 <linearGradient id="progressGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="tasksGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#667eea" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#667eea" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" strokeOpacity={0.5} />
@@ -340,15 +318,14 @@ function Dashboard() {
                 contentStyle={{ 
                   background: 'rgba(15, 23, 42, 0.95)',
                   border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '16px',
+                  borderRadius: '12px',
                   backdropFilter: 'blur(20px)'
                 }}
-                labelStyle={{ color: '#94a3b8' }}
               />
               <Area 
                 type="monotone" 
                 dataKey="progress" 
-                stroke="#0ea5e9"
+                stroke="#667eea"
                 strokeWidth={3}
                 fill="url(#progressGradient)"
               />
@@ -356,7 +333,7 @@ function Dashboard() {
           </ResponsiveContainer>
         </motion.div>
 
-        {/* Today's Tasks */}
+        {/* Today's Tasks - Blog Style */}
         <motion.div 
           className="glass-card p-6"
           initial={{ opacity: 0, y: 20 }}
@@ -366,7 +343,7 @@ function Dashboard() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-semibold">✅ 今日任务</h2>
-              <p className="text-dark-400 text-sm mt-1">{todayTasks.length} 项待办</p>
+              <p className="text-dark-400 text-sm">{todayTasks.length} 项待办</p>
             </div>
             <button className="p-2 rounded-lg bg-primary-500/20 hover:bg-primary-500/30 transition-all">
               <Plus size={18} className="text-primary-400" />
@@ -386,7 +363,7 @@ function Dashboard() {
         </motion.div>
       </div>
 
-      {/* Projects Section */}
+      {/* Projects Section - Blog Style */}
       <motion.div 
         className="glass-card p-6"
         initial={{ opacity: 0, y: 20 }}
@@ -396,7 +373,7 @@ function Dashboard() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-semibold">🚀 我的项目</h2>
-            <p className="text-dark-400 text-sm mt-1">{recentProjects.length} 个项目进行中</p>
+            <p className="text-dark-400 text-sm">{recentProjects.length} 个项目进行中</p>
           </div>
           <button className="text-primary-400 hover:text-primary-300 text-sm font-medium flex items-center gap-2">
             查看全部
@@ -410,10 +387,6 @@ function Dashboard() {
           ))}
         </div>
       </motion.div>
-
-      {/* Background Decorations */}
-      <div className="floating-bg floating-bg-1" />
-      <div className="floating-bg floating-bg-2" />
     </div>
   )
 }

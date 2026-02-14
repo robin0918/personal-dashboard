@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待办事项 ✨</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                <span class="logo-text">待办事项</span>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-filter="all">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">全部</span>
+                    <span class="count" id="countAll">0</span>
+                </button>
+                <button class="nav-item" data-filter="active">
+                    <span class="nav-icon">🔴</span>
+                    <span class="nav-text">待完成</span>
+                    <span class="count" id="countActive">0</span>
+                </button>
+                <button class="nav-item" data-filter="completed">
+                    <span class="nav-icon">✅</span>
+                    <span class="nav-text">已完成</span>
+                    <span class="count" id="countCompleted">0</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">🐉</div>
+                    <div class="user-name">龙王</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部 -->
+            <header class="top-bar">
+                <h1 class="page-title">我的待办</h1>
+                <button class="btn-primary" id="addTaskBtn">+ 添加任务</button>
+            </header>
+
+            <!-- 任务列表 -->
+            <div class="content-area">
+                <!-- 添加任务表单 -->
+                <div class="add-task-form" id="addTaskForm">
+                    <div class="input-group">
+                        <input type="text" id="taskInput" placeholder="添加新任务..." style="flex: 2;">
+                        <input type="text" id="tagInput" placeholder="标签 (工作/生活)" style="flex: 0.8;">
+                        <input type="date" id="dateInput">
+                        <input type="time" id="timeInput" style="width: 120px;">
+                        <button class="btn-add" id="saveTaskBtn">添加</button>
+                    </div>
+                </div>
+
+                <!-- 搜索 -->
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="搜索任务...">
+                </div>
+
+                <!-- 任务列表 -->
+                <div class="tasks-container">
+                    <div class="tasks-list" id="tasksList">
+                        <!-- 任务会动态生成 -->
+                    </div>
+                    
+                    <!-- 空状态 -->
+                    <div class="empty-state" id="emptyState">
+                        <span class="empty-icon">📝</span>
+                        <p>暂无待办事项</p>
+                        <p class="empty-hint">添加一个新任务开始吧！</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>编辑任务</h3>
+                <button class="modal-close" id="closeEditModal">×</button>
+            </div>
+            <form id="editForm" class="edit-form">
+                <input type="hidden" id="editTaskId">
+                <div class="form-group">
+                    <label>任务内容</label>
+                    <input type="text" id="editTaskContent" required>
+                </div>
+                <div class="form-group">
+                    <label>标签</label>
+                    <input type="text" id="editTag" placeholder="工作/生活">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>日期</label>
+                        <input type="date" id="editDate">
+                    </div>
+                    <div class="form-group">
+                        <label>时间</label>
+                        <input type="time" id="editTime">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelEdit">取消</button>
+                    <button type="submit" class="btn-save">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 删除确认弹窗 -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content small">
+            <h3>确认删除</h3>
+            <p>确定要删除这个任务吗？</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" id="cancelDelete">取消</button>
+                <button class="btn-danger" id="confirmDelete">删除</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
